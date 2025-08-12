@@ -1,0 +1,66 @@
+- dashboards
+  ├── Campos: id, total_arrestos, total_multas, total_conflictos, created_at, updated_at
+  └── Relaciones:
+      ├── Referenciada en bitacoras (tabla, objeto_id)
+      └── Relacionada indirectamente con detenciones, multas, conflicto_vecinal (conteos)
+
+- personas
+  ├── Campos: id, nombre, primer_apellido, segundo_apellido, fecha_nacimiento, edad, created_at, updated_at
+  └── Relaciones:
+      ├── hasMany: identificadores (persona_id)
+      ├── hasMany: detenciones (persona_id)
+      ├── hasMany: multas (persona_id)
+      ├── hasMany: conflicto_vecinal (querellante_id, querellado_id)
+      └── Referenciada en bitacoras (tabla, objeto_id)
+
+- tipos_identificadores
+  ├── Campos: id, nombre, created_at, updated_at
+  └── Relaciones:
+      └── hasMany: identificadores (tipo_identificador_id)
+
+- identificadores
+  ├── Campos: id, persona_id, tipo_identificador_id, valor, created_at, updated_at
+  └── Relaciones:
+      ├── belongsTo: personas (persona_id)
+      └── belongsTo: tipos_identificadores (tipo_identificador_id)
+
+- bitacoras
+  ├── Campos: id, user_id, accion, tabla, objeto_id, detalle, created_at, updated_at
+  └── Relaciones:
+      └── belongsTo: users (user_id)
+
+- detenciones
+  ├── Campos: id, persona_id, fecha_detencion, motivo, estado, carpeta_id, created_at, updated_at
+  └── Relaciones:
+      ├── belongsTo: personas (persona_id)
+      ├── belongsTo: carpetas (carpeta_id, opcional)
+      └── Referenciada en bitacoras (tabla, objeto_id)
+
+- multas
+  ├── Campos: id, persona_id, monto, motivo, fecha_emision, estado, carpeta_id, created_at, updated_at
+  └── Relaciones:
+      ├── belongsTo: personas (persona_id)
+      ├── belongsTo: carpetas (carpeta_id, opcional)
+      └── Referenciada en bitacoras (tabla, objeto_id)
+
+- carpetas
+  ├── Campos: id, numero_carpeta, conflicto_vecinal_id, estado, fecha_apertura, fecha_cierre, created_at, updated_at
+  └── Relaciones:
+      ├── belongsTo: conflicto_vecinal (conflicto_vecinal_id)
+      ├── hasMany: archivos_de_carpetas (carpeta_id)
+      ├── hasMany: multas (carpeta_id)
+      ├── hasMany: detenciones (carpeta_id)
+      └── Referenciada en bitacoras (tabla, objeto_id)
+
+- archivos_de_carpetas
+  ├── Campos: id, carpeta_id, nombre_archivo, ruta_archivo, tipo_archivo, created_at, updated_at
+  └── Relaciones:
+      ├── belongsTo: carpetas (carpeta_id)
+      └── Referenciada en bitacoras (tabla, objeto_id)
+
+- conflicto_vecinal
+  ├── Campos: id, querellante_id, querellado_id, descripcion, fecha_conflicto, estado, created_at, updated_at
+  └── Relaciones:
+      ├── belongsTo: personas (querellante_id, querellado_id)
+      ├── hasOne: carpetas (conflicto_vecinal_id)
+      └── Referenciada en bitacoras (tabla, objeto_id)
