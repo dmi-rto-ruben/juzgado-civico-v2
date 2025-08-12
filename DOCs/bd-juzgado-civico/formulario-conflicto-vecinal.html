@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-200">
+    <div class="container mx-auto px-4">
+        <h1 class="text-2xl font-bold mb-6">Registro de Conflicto Vecinal</h1>
+        
+        <form method="POST" action="{{ route('conflictos.store') }}" class="bg-white rounded-lg shadow p-6">
+            <!--@csrf-->
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Buscador de Solicitante -->
+                <div class="col-span-1">
+                    <label class="block font-medium mb-2">Solicitante*</label>
+                    <x-person-search-input name="solicitante_id" required />
+                </div>
+                
+                <!-- Buscador de Vecino en Conflicto -->
+                <div class="col-span-1">
+                    <label class="block font-medium mb-2">Vecino en Conflicto*</label>
+                    <x-person-search-input name="vecino_id" required />
+                </div>
+                
+                <!-- Descripción -->
+                <div class="col-span-2">
+                    <label class="block font-medium mb-2">Descripción de la Inconformidad*</label>
+                    <textarea name="descripcion" rows="4" class="w-full border rounded p-2" required></textarea>
+                </div>
+                
+                <!-- Datos del Citatorio -->
+                <div class="col-span-1">
+                    <label class="block font-medium mb-2">Fecha del Citatorio</label>
+                    <input type="date" name="fecha_citatorio" class="border rounded p-2 w-full">
+                </div>
+                
+                <div class="col-span-1">
+                    <label class="block font-medium mb-2">Hora de la Cita</label>
+                    <input type="time" name="hora_cita" class="border rounded p-2 w-full">
+                </div>
+                
+                <div class="col-span-2">
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" name="notificado" class="rounded border-gray-300">
+                        <span class="ml-2">Notificado</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="mt-6">
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    Registrar Conflicto
+                </button>
+            </div>
+        </form>
+    </div>
+    
+</body>
+</html>
